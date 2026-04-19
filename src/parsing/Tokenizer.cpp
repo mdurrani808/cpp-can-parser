@@ -252,7 +252,7 @@ std::string Tokenizer::parseNumber(bool& is_float) {
       result += currentChar;
       currentChar = getNextChar();
     }
-    else if(currentChar == 'e') {
+    else if(currentChar == 'e' || currentChar == 'E') {
       result += currentChar;
       currentChar = getNextChar();
       
