@@ -33,7 +33,7 @@ static std::set<std::string> SUPPORTED_DBC_TOKENS = {
 };
 
 static std::set<std::string> NS_TOKENS = {
-  "NS_DESC_",
+  "NS_DESC_", "SG_MUL_VAL_",
   "CM_", "BA_DEF_", "BA_", "VAL_", "CAT_DEF_", "CAT_", "FILTER", "BA_DEF_DEF_",
   "EV_DATA_", "ENVVAR_DATA_", "SGTYPE_", "SGTYPE_VAL_", "BA_DEF_SGTYPE_", "BA_SGTYPE_",
   "SIG_TYPE_DEF_", "SIG_TYPE_REF_", "VAL_TABLE_", "SIG_GROUP_", "SIG_VALTYPE_",
