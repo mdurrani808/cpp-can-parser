@@ -288,15 +288,19 @@ parseCommentSection(dtl::Tokenizer& tokenizer, CppCAN::CANDatabase& db,
       continue;
     }
 
-    dtl::Token commentType = dtl::assert_token(tokenizer, dtl::Token::Identifier);
-    if(commentType == MESSAGE_DEF_TOKEN) {
-      parseMsgCommentInstruction(tokenizer, db, warnings);
+    try {
+      dtl::Token commentType = dtl::assert_token(tokenizer, dtl::Token::Identifier);
+      if(commentType == MESSAGE_DEF_TOKEN) {
+        parseMsgCommentInstruction(tokenizer, db, warnings);
+      }
+      else if(commentType == SIG_DEF_TOKEN) {
+        parseSigCommentInstruction(tokenizer, db, warnings);
+      }
+      else {
+        tokenizer.skipUntil(";");
+      }
     }
-    else if(commentType == SIG_DEF_TOKEN) {
-      parseSigCommentInstruction(tokenizer, db, warnings);
-    }
-    else {
-      dtl::warning(warnings, "Unsupported comment instruction", tokenizer.lineCount());
+    catch(const CppCAN::CANDatabaseException&) {
       tokenizer.skipUntil(";");
     }
   }
