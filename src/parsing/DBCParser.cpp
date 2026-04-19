@@ -101,32 +101,24 @@ parseBitTimingSection(dtl::Tokenizer& tokenizer) {
 }
 
 static void
-parseNodesSection(dtl::Tokenizer& tokenizer, CppCAN::CANDatabase& db, 
+parseNodesSection(dtl::Tokenizer& tokenizer, CppCAN::CANDatabase& db,
                   std::vector<CppCAN::CANDatabase::parsing_warning>* warnings) {
   dtl::assert_token(tokenizer, NODE_DEF_TOKEN);
   dtl::assert_token(tokenizer, ":");
 
   std::set<std::string> nodes;
 
-  if(!dtl::peek_token(tokenizer, dtl::Token::Identifier)) {
-    return;
-  }
-
-  dtl::Token currentToken = dtl::assert_token(tokenizer, dtl::Token::Identifier);
-
-  // Looking for all the identifiers on the same line
-  while(currentToken != dtl::Token::Eof &&
-        !is_dbc_token(currentToken)) {
-    
-    if(nodes.count(currentToken.image) > 0) {
-      dtl::warning(warnings, currentToken.image + " is an already registered node name", 
+  dtl::Token currentToken = tokenizer.getNextToken();
+  while (currentToken != dtl::Token::Eof &&
+         currentToken == dtl::Token::Identifier &&
+         !is_dbc_token(currentToken)) {
+    if (nodes.count(currentToken.image) > 0) {
+      dtl::warning(warnings, currentToken.image + " is an already registered node name",
               tokenizer.lineCount());
-    }
-    else {
+    } else {
       nodes.insert(currentToken.image);
     }
-    
-    currentToken = dtl::assert_token(tokenizer, dtl::Token::Identifier);
+    currentToken = tokenizer.getNextToken();
   }
 
   tokenizer.saveTokenIfNotEof(currentToken);
