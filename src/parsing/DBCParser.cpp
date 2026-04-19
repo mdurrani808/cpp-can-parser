@@ -301,7 +301,7 @@ parseCommentSection(dtl::Tokenizer& tokenizer, CppCAN::CANDatabase& db,
       }
     }
     catch(const CppCAN::CANDatabaseException&) {
-      tokenizer.skipUntil(";");
+      try { tokenizer.skipUntil(";"); } catch(...) { return; }
     }
   }
 }
