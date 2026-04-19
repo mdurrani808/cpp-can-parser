@@ -145,7 +145,11 @@ parseSigDefInstruction(dtl::Tokenizer& tokenizer, CppCAN::CANFrame& frame,
   dtl::assert_current_token(tokenizer, SIG_DEF_TOKEN);
 
   dtl::Token name = dtl::assert_token(tokenizer, dtl::Token::Identifier);
-  dtl::assert_token(tokenizer, ":");
+  // Skip optional mux indicator (e.g. M, m0, m16M) between signal name and ":"
+  if (!dtl::peek_token(tokenizer, ":")) {
+    dtl::assert_token(tokenizer, dtl::Token::Identifier);
+    dtl::assert_token(tokenizer, ":");
+  }
   dtl::Token startBit = dtl::assert_token(tokenizer, dtl::Token::PositiveNumber);
   dtl::assert_token(tokenizer, "|");
   dtl::Token length = assert_token(tokenizer, dtl::Token::PositiveNumber);
