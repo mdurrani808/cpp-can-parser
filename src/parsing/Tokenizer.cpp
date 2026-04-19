@@ -243,6 +243,12 @@ std::string Tokenizer::parseNumber(bool& is_float) {
   char currentChar = getNextChar();
   is_float = false;
 
+  if (currentChar == '.') {
+    is_float = true;
+    result += currentChar;
+    currentChar = getNextChar();
+  }
+
   while (isDigit(currentChar) && !isEOF(currentChar)) {
     result += currentChar;
     currentChar = getNextChar();
