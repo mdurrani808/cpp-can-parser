@@ -51,6 +51,12 @@ public:
     BigEndian, LittleEndian
   };
 
+  enum MuxType {
+    NotMuxed,
+    Multiplexer,
+    MuxedSignal
+  };
+
 public:
   CANSignal() = delete;
   CANSignal(const std::string& name, unsigned int start_bit, unsigned int length,
@@ -80,9 +86,12 @@ public:
 
   const std::map<unsigned int, std::string>& choices() const;
 
-  void setComment(const std::string& comment);
+  MuxType mux_type() const;
+  int mux_value() const;
 
+  void setComment(const std::string& comment);
   void setChoices(const std::map<unsigned int, std::string>& choices);
+  void setMuxInfo(MuxType type, int value = -1);
 
 private:
   std::string name_;
@@ -95,6 +104,8 @@ private:
   Range range_;
   std::string comment_;
   std::map<unsigned int, std::string> choices_;
+  MuxType mux_type_{NotMuxed};
+  int mux_value_{-1};
 };
 
 /**

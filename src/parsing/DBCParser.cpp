@@ -145,10 +145,21 @@ parseSigDefInstruction(dtl::Tokenizer& tokenizer, CppCAN::CANFrame& frame,
   dtl::assert_current_token(tokenizer, SIG_DEF_TOKEN);
 
   dtl::Token name = dtl::assert_token(tokenizer, dtl::Token::Identifier);
-  // Skip optional mux indicator (e.g. M, m0, m16M) between signal name and ":"
+  // Parse optional mux indicator (e.g. M, m0, m16, m16M) between signal name and ":"
+  CppCAN::CANSignal::MuxType muxType = CppCAN::CANSignal::NotMuxed;
+  int muxVal = -1;
   if (!dtl::peek_token(tokenizer, ":")) {
-    dtl::assert_token(tokenizer, dtl::Token::Identifier);
+    dtl::Token muxToken = dtl::assert_token(tokenizer, dtl::Token::Identifier);
     dtl::assert_token(tokenizer, ":");
+    const std::string& m = muxToken.image;
+    if (m == "M") {
+      muxType = CppCAN::CANSignal::Multiplexer;
+    } else if (!m.empty() && m[0] == 'm') {
+      muxType = CppCAN::CANSignal::MuxedSignal;
+      std::string numStr = m.substr(1);
+      if (!numStr.empty() && numStr.back() == 'M') numStr.pop_back();
+      if (!numStr.empty()) muxVal = std::stoi(numStr);
+    }
   }
   dtl::Token startBit = dtl::assert_token(tokenizer, dtl::Token::PositiveNumber);
   dtl::assert_token(tokenizer, "|");
@@ -193,6 +204,8 @@ parseSigDefInstruction(dtl::Tokenizer& tokenizer, CppCAN::CANFrame& frame,
       CppCAN::CANSignal::Range::fromString(min.image, max.image)
     )
   );
+  if (muxType != CppCAN::CANSignal::NotMuxed)
+    frame[name.image].setMuxInfo(muxType, muxVal);
 }
 
 static void

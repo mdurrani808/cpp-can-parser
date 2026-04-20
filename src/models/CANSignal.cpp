@@ -66,3 +66,11 @@ void CANSignal::setComment(const std::string & comment) {
 void CANSignal::setChoices(const std::map<unsigned int, std::string>& choices) {
   choices_ = choices;
 }
+
+CANSignal::MuxType CANSignal::mux_type() const { return mux_type_; }
+int CANSignal::mux_value() const { return mux_value_; }
+
+void CANSignal::setMuxInfo(MuxType type, int value) {
+  mux_type_ = type;
+  mux_value_ = value;
+}
