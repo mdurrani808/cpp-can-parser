@@ -31,6 +31,10 @@ unsigned int CANSignal::length() const {
   return length_;
 }
 
+const std::string & CANSignal::unit() const {
+  return unit_;
+}
+
 const std::string & CANSignal::comment() const {
   return comment_;
 }
@@ -57,6 +61,10 @@ CANSignal::Endianness CANSignal::endianness() const {
 
 const std::map<unsigned int, std::string>& CANSignal::choices() const {
   return choices_;
+}
+
+void CANSignal::setUnit(const std::string & unit) {
+  unit_ = unit;
 }
 
 void CANSignal::setComment(const std::string & comment) {

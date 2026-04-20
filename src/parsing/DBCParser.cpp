@@ -192,7 +192,7 @@ parseSigDefInstruction(dtl::Tokenizer& tokenizer, CppCAN::CANFrame& frame,
     dtl::warning(warnings, ss.str(), tokenizer.lineCount());
   }
 
-  frame.addSignal(
+    frame.addSignal(
     CppCAN::CANSignal(
       name.image,
       startBit.toUInt(),
@@ -204,6 +204,7 @@ parseSigDefInstruction(dtl::Tokenizer& tokenizer, CppCAN::CANFrame& frame,
       CppCAN::CANSignal::Range::fromString(min.image, max.image)
     )
   );
+  frame[name.image].setUnit(unit.image);
   if (muxType != CppCAN::CANSignal::NotMuxed)
     frame[name.image].setMuxInfo(muxType, muxVal);
 }

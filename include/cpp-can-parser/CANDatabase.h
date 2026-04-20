@@ -86,10 +86,13 @@ public:
 
   const std::map<unsigned int, std::string>& choices() const;
 
+  const std::string& unit() const;
+
   MuxType mux_type() const;
   int mux_value() const;
 
   void setComment(const std::string& comment);
+  void setUnit(const std::string& unit);
   void setChoices(const std::map<unsigned int, std::string>& choices);
   void setMuxInfo(MuxType type, int value = -1);
 
@@ -103,6 +106,7 @@ private:
   Endianness endianness_;
   Range range_;
   std::string comment_;
+  std::string unit_;
   std::map<unsigned int, std::string> choices_;
   MuxType mux_type_{NotMuxed};
   int mux_value_{-1};
@@ -196,6 +200,7 @@ public:
    * @brief Updates the frame's associated comment.
    */
   void setComment(const std::string& comment);
+  void setUnit(const std::string& unit);
 
 public:
   /**
@@ -264,6 +269,7 @@ private:
   unsigned int dlc_;
   unsigned int period_;
   std::string comment_;
+  std::string unit_;
   
   container_type map_;
 };
